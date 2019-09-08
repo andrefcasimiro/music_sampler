@@ -1,0 +1,20 @@
+
+.step {
+  display: flex;
+  background: rgba(0, 0, 0, 0.5);
+  flex-grow: 1;
+  border: 1px solid pink;
+  min-height: 2rem;
+  min-width: 2rem;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.marker {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.active {
+  background: green;
+}

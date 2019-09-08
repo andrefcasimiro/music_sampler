@@ -1,0 +1,9 @@
+
+.stepsGrid {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+  width: 100%;
+  min-height: 10rem;
+  background: rgba(0, 0, 0, 0.5);
+}

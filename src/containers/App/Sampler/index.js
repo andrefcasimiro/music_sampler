@@ -1,5 +1,7 @@
 // @flow
 import React, { Component } from 'react'
+import Instrument from './Instrument'
+import { generateContentBasedOnSteps } from './helpers'
 import './index.css'
 
 type Props = {
@@ -15,6 +17,10 @@ type State = {
   sequencer: {
     currentPosition: number,
   },
+  instruments: Array<{
+    name: string,
+    samplePath: string,
+  }>
 }
 
 var timerID
@@ -32,10 +38,19 @@ class Sampler extends Component<Props, State> {
       sequencer: {
         currentPosition: 0,
       },
+      instruments: [
+        {
+          name: 'Instrument 1',
+          samplePath: '',
+        },
+        {
+          name: 'Instrument 2',
+          samplePath: '',
+        }
+      ]
     }
 
     this.handleChange = this.handleChange.bind(this)
-    this.generateContentBasedOnSteps = this.generateContentBasedOnSteps.bind(this)
     this.handlePlay = this.handlePlay.bind(this)
     this.manageNextPosition = this.manageNextPosition.bind(this)
   }
@@ -46,8 +61,6 @@ class Sampler extends Component<Props, State> {
     const name = event.target.name
     const value = event.target.value
 
-    console.log('new value: ', value)
-
     this.setState({
       settings: {
         ...this.state.settings,
@@ -56,27 +69,12 @@ class Sampler extends Component<Props, State> {
     })
   }
 
-  generateContentBasedOnSteps = (type: 'step' | 'bpm') => {
-    let groupedContent = []
-
-    for (let i = 0; i < this.state.settings.steps; i++) {
-
-      var marker = i % 4
-      var className = marker ? `${type} mark` : type
-
-      groupedContent.push(<div key={i} className={className} />)
-    }
-
-    return groupedContent
-  }
-
   // Sequencer Logic Here
 
   manageNextPosition = () => {
     const { currentPosition } = this.state.sequencer
     const { steps } = this.state.settings
 
-    console.log('current position: ', currentPosition)
     if (currentPosition + 1 >= steps) {
 
       this.setState({
@@ -103,13 +101,11 @@ class Sampler extends Component<Props, State> {
 
     // 1 minute = 60 seconds = 60,000 milliseconds
     // Single Beat- Quarter Note
-    // 60 000 / bpm = desired ms for a quarter note
-    // Half A note
-    // 60 000 * 2 / bpm = desired ms for half a note
+    // 60 000 / (bpm / linesPerBeat) = desired ms for a quarter note
 
-
-    const tempo = this.state.settings.tempo
-    const linesPerBeat = this.state.settings.linesPerBeat
+    // Never allow tempo or lpb to be 0 or it will produce insane fast intervals
+    const tempo = this.state.settings.tempo || 1
+    const linesPerBeat = this.state.settings.linesPerBeat || 1
     const interval = ((Math.pow(10, 4) * 6) / linesPerBeat) / tempo
 
     timerID = setInterval(
@@ -129,7 +125,10 @@ class Sampler extends Component<Props, State> {
   componentDidUpdate(nextProps: Props, nextState: State) {
     if (this.state.settings !== nextState.settings) {
       this.handleStop()
-      this.handlePlay()
+
+      if (nextProps.audioManagerAllowed) {
+        this.handlePlay()
+      }
     }
   }
 
@@ -158,13 +157,19 @@ class Sampler extends Component<Props, State> {
         {/* Bpm Indicator */}
         <div className='bpmGrid'>
           <div className='bpm default empty' /> {/* Simple offset to match the instrument grid logic below */}
-          {this.generateContentBasedOnSteps('bpm')}
+          {generateContentBasedOnSteps('bpm', this.state)}
         </div>
 
         {/* For Each Instrument, Have a Grid With The Steps */}
         <div className='instrumentGrid'>
-          <div className='step default'>Instrument 1</div>
-          {this.generateContentBasedOnSteps('step')}
+          {this.state.instruments.map((instrument, index) =>
+            <Instrument
+              key={index}
+              instrument={instrument}
+              sequencer={this.state.sequencer}
+              settings={this.state.settings}
+            />
+          )}
         </div>
       </div>
     )

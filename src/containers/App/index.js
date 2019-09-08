@@ -33,7 +33,6 @@ class App extends Component<Props, State> {
     }
   }
 
-
   render() {
     return (
       <div className="container">

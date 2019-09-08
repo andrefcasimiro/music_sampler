@@ -42,42 +42,13 @@ p {
   min-height: 1rem;
 }
 
-.bpm {
-  display: flex;
-  background: rgba(0, 0, 0, 0.5);
-  flex-grow: 1;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  min-height: 1rem;
-  min-width: 2rem;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
-
 /* Instrument */
 .instrumentGrid {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-bottom: 1rem;
   width: 100%;
   min-height: 10rem;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.step {
-  display: flex;
-  background: rgba(0, 0, 0, 0.5);
-  flex-grow: 1;
-  border: 1px solid pink;
-  min-height: 2rem;
-  min-width: 2rem;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
-
-.mark {
-  background: rgba(0, 0, 0, 0.3);
 }
 
 .default {
