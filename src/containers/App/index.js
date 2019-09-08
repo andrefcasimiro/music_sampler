@@ -39,6 +39,7 @@ class App extends Component<Props, State> {
 
   render() {
     return (
+      <React.Fragment>
       <div className="container">
         <button onClick={this.resumeAudioContext}>
           {this.state.audioManagerAllowed
@@ -51,7 +52,16 @@ class App extends Component<Props, State> {
           audioManagerAllowed={this.state.audioManagerAllowed}
           audioManager={this.state.audioManager}
         />
-      </div>
+
+        </div>
+          <footer>
+            <p>Made with <strong>React</strong> and <strong>Node JS</strong></p>
+            <br />
+            <p>André Fernandes / andrefcasimiro@gmail.com / v0.1 - 9/9/2019</p>
+            <br />
+            <a href='https://github.com/andrefcasimiro/music_sampler'>Get the src code... (Github)</a>
+        </footer>
+      </React.Fragment>
     )
   }
 }

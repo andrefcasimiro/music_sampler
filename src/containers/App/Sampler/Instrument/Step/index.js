@@ -1,12 +1,18 @@
 // @flow
 import React, { Component } from 'react'
 import './index.css'
+// $Ignore
+import { 
+  MdSettings as SettingsIcon,
+  MdAddCircleOutline as AddIcon, 
+  MdRemoveCircleOutline as RemoveIcon, 
+} from 'react-icons/md'
 import AudioManager from 'data/classes/AudioManager'
 
 
-function loadSample (url: string, audioContext: AudioContext, callback: (file: any, originalPath: string) => mixed) {
+function loadSample (url: string, audioContext: AudioContext, pitch = 1, volume = 1, callback: (file: any, originalPath: string) => mixed) {
   var request = new XMLHttpRequest()
-  
+
   var originalUrl = url
   url = url.replace('public/', '/')
 
@@ -19,6 +25,15 @@ function loadSample (url: string, audioContext: AudioContext, callback: (file: a
     audioContext.decodeAudioData(request.response, function (buffer) {
       // Now for the fun part :)
       var source = audioContext.createBufferSource(); // creates a sound source
+
+      // Pitch
+      source.playbackRate.value = pitch
+      // Volume
+      var gainNode = audioContext.createGain()
+      gainNode.gain.value = volume
+      gainNode.connect(audioContext.destination)
+      source.connect(gainNode)
+
       source.buffer = buffer
       source.connect(audioContext.destination)
       source.start(0)
@@ -48,6 +63,9 @@ type State = {
     file: any,
     originalPath: string,
   },
+  isOpen: boolean,
+  pitch: number,
+  volume: number,
 }
 
 class Step extends Component<Props, State> {
@@ -56,9 +74,16 @@ class Step extends Component<Props, State> {
 
     this.state = {
       cachedSample: undefined,
+      pitch: 1,
+      volume: 1,
+      isOpen: false,
     }
 
     this.playSound = this.playSound.bind(this)
+    this.setPitch = this.setPitch.bind(this)
+    this.setVolume = this.setVolume.bind(this)
+    this.reset = this.reset.bind(this)
+    this.toggleOpen = this.toggleOpen.bind(this)
   }
 
   playSound = () => {
@@ -68,10 +93,19 @@ class Step extends Component<Props, State> {
       // Now for the fun part :)
       var source = audioManager.context.createBufferSource(); // creates a sound source
       source.buffer = this.state.cachedSample.file
+
+      // Pitch
+      source.playbackRate.value = this.state.pitch
+      // Volume
+      var gainNode = audioManager.context.createGain()
+      gainNode.gain.value = this.state.volume
+      gainNode.connect(audioManager.context.destination)
+      source.connect(gainNode)
+
       source.connect(audioManager.context.destination)
       source.start(0)
     } else {
-      loadSample(instrument.samplePath, audioManager.context, (file, originalPath) => this.setState({ cachedSample: { file: file, originalPath: originalPath } }))
+      loadSample(instrument.samplePath, audioManager.context, this.state.pitch, this.state.volume, (file, originalPath) => this.setState({ cachedSample: { file: file, originalPath: originalPath } }))
     }
   }
 
@@ -85,6 +119,33 @@ class Step extends Component<Props, State> {
         cachedSample: undefined,
       })
     }
+  }
+
+  // Context Menus
+  toggleOpen = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    })
+  }
+
+  // Effects
+  setPitch = (value: number) => {
+
+    this.setState({
+      pitch: value,
+    })
+  }
+  setVolume = (value: number) => {
+
+    this.setState({
+      volume: value,
+    })
+  }
+  reset = () => {
+    this.setState({
+      pitch: 1,
+      volume: 1,
+    })
   }
 
   render() {
@@ -104,7 +165,31 @@ class Step extends Component<Props, State> {
     }
 
     return (
-      <div className={className} onClick={() => this.props.onSelect(this.props.selectionID)} />
+      <React.Fragment>
+        <div className={className} onClick={() => this.props.onSelect(this.props.selectionID)} />
+        <div className="optionWrapper">
+          {selected && <button className="option" onClick={this.toggleOpen}><SettingsIcon /></button>}
+        </div>
+        {this.state.isOpen && selected &&
+          <div className="contextMenuWrapper">
+            <div className="contextMenu">
+              <p>
+                <RemoveIcon onClick={() => this.setPitch(this.state.pitch - 0.05)} />
+                <p>Pitch: {(this.state.pitch).toFixed(2)}</p>
+                <AddIcon onClick={() => this.setPitch(this.state.pitch + 0.05)} />
+              </p>
+              <p>
+                <RemoveIcon onClick={() => this.setVolume((this.state.volume - 0.1))} />
+                <p>Volume: {(this.state.volume).toFixed(2)}</p>
+                <AddIcon onClick={() => this.setVolume((this.state.volume + 0.1))} />
+              </p>
+              <p>
+                <button onClick={() => this.reset()}>Reset</button>
+              </p>
+            </div>
+          </div>
+        }
+      </React.Fragment>
     )
   }
 
