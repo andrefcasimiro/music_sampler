@@ -2,8 +2,10 @@
 import React, { Component } from 'react'
 import { generateContentBasedOnSteps } from '../helpers'
 import './index.css'
+import AudioManager from 'data/classes/AudioManager'
 
 type Props = {
+  audioManager: AudioManager,
   settings: {
     tempo: number,
     steps: number,

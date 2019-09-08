@@ -42,6 +42,7 @@ class App extends Component<Props, State> {
 
         <Sampler
           audioManagerAllowed={this.state.audioManagerAllowed}
+          audioManager={this.state.audioManager}
         />
       </div>
     )

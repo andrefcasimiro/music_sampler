@@ -12,7 +12,7 @@ export var generateContentBasedOnSteps = (type: 'step' | 'bpm', state: any) => {
 
     groupedContent.push(
       type === 'step'
-        ? <Step key={i} active={active} marker={!!marker} />
+        ? <Step key={i} position={i} active={active} marker={!!marker} instrument={state.instrument} audioManager={state.audioManager} />
         : <BPMIndicator key={i} active={active} marker={!!marker} />
       )
   }

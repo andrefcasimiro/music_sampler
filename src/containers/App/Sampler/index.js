@@ -1,11 +1,18 @@
 // @flow
 import React, { Component } from 'react'
 import Instrument from './Instrument'
+// $Ignore
+import kick from 'assets/data/samples/TR-909/Kick.WAV'
+// $Ignore
+import snare from 'assets/data/samples/TR-909/Snare.WAV'
 import { generateContentBasedOnSteps } from './helpers'
+import AudioManager from 'data/classes/AudioManager'
 import './index.css'
+
 
 type Props = {
   audioManagerAllowed: boolean,
+  audioManager: AudioManager,
 }
 
 type State = {
@@ -41,11 +48,11 @@ class Sampler extends Component<Props, State> {
       instruments: [
         {
           name: 'Instrument 1',
-          samplePath: '',
+          samplePath: kick,
         },
         {
           name: 'Instrument 2',
-          samplePath: '',
+          samplePath: snare,
         }
       ]
     }
@@ -168,6 +175,7 @@ class Sampler extends Component<Props, State> {
               instrument={instrument}
               sequencer={this.state.sequencer}
               settings={this.state.settings}
+              audioManager={this.props.audioManager}
             />
           )}
         </div>
