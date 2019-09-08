@@ -1,0 +1,92 @@
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.setting {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.3);
+  margin-bottom: 2rem;
+}
+
+input {
+  display: flex;
+  width: 4rem;
+  font-size: 1.2rem;
+  border-radius: .5rem;
+  padding: .25rem;
+  border: 0.1rem solid rgba(0, 0, 0, 0.3);
+  margin: 0 1rem;
+}
+
+p {
+  font-size: 1.3rem;
+  font-family: 'Arial';
+  margin: 0;
+}
+
+/* BPM Indicator */
+.bpmGrid {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 1rem;
+}
+
+.bpm {
+  display: flex;
+  background: rgba(0, 0, 0, 0.5);
+  flex-grow: 1;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-height: 1rem;
+  min-width: 2rem;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* Instrument */
+.instrumentGrid {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+  width: 100%;
+  min-height: 10rem;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.step {
+  display: flex;
+  background: rgba(0, 0, 0, 0.5);
+  flex-grow: 1;
+  border: 1px solid pink;
+  min-height: 2rem;
+  min-width: 2rem;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.mark {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.default {
+  background: rgba(0, 0, 0, 0.1);
+  width: 5rem;
+  border: none;
+}
+
+.empty {
+  background: none;
+  border: none;
+}
