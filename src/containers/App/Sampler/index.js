@@ -10,6 +10,7 @@ type State = {
   settings: {
     tempo: number,
     steps: number,
+    linesPerBeat: number,
   },
   sequencer: {
     currentPosition: number,
@@ -26,6 +27,7 @@ class Sampler extends Component<Props, State> {
       settings: {
         tempo: 120,
         steps: 16,
+        linesPerBeat: 2,
       },
       sequencer: {
         currentPosition: 0,
@@ -43,6 +45,8 @@ class Sampler extends Component<Props, State> {
   handleChange = (event: SyntheticInputEvent<*>) => {
     const name = event.target.name
     const value = event.target.value
+
+    console.log('new value: ', value)
 
     this.setState({
       settings: {
@@ -72,19 +76,18 @@ class Sampler extends Component<Props, State> {
     const { currentPosition } = this.state.sequencer
     const { steps } = this.state.settings
 
-    console.log('current Position: ', currentPosition)
-
+    console.log('current position: ', currentPosition)
     if (currentPosition + 1 >= steps) {
-      console.log('resert position')
-      return this.setState({
+
+      this.setState({
         sequencer: {
           ...this.state.sequencer,
           currentPosition: 0,
         },
       })
     } else {
-      console.log('go to next position', this.state.sequencer.currentPosition + 1)
-      return this.setState({
+
+      this.setState({
         sequencer: {
           ...this.state.sequencer,
           currentPosition: this.state.sequencer.currentPosition + 1,
@@ -96,9 +99,23 @@ class Sampler extends Component<Props, State> {
   handlePlay = () => {
     // Every Beats Per Minute / 60, Advance One Position
     // If Next Position Is After Number Of Steps, Return To 0
+
+
+    // 1 minute = 60 seconds = 60,000 milliseconds
+    // Single Beat- Quarter Note
+    // 60 000 / bpm = desired ms for a quarter note
+    // Half A note
+    // 60 000 * 2 / bpm = desired ms for half a note
+
+
+    const tempo = this.state.settings.tempo
+    const linesPerBeat = this.state.settings.linesPerBeat
+    const interval = ((Math.pow(10, 4) * 6) / linesPerBeat) / tempo
+
     timerID = setInterval(
       () => this.manageNextPosition(),
-    1000)
+      interval,
+    )
   }
 
   handleStop = () => {
@@ -107,6 +124,13 @@ class Sampler extends Component<Props, State> {
 
   componentWillUnmount() {
     this.handleStop()
+  }
+
+  componentDidUpdate(nextProps: Props, nextState: State) {
+    if (this.state.settings !== nextState.settings) {
+      this.handleStop()
+      this.handlePlay()
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -124,9 +148,11 @@ class Sampler extends Component<Props, State> {
       <div className="settingsContainer">
         <div className="setting">
           <p>BPM:</p>
-          <input type='text' name='tempo' value={this.state.settings.tempo} onChange={this.handleChange} />
+          <input type='number' name='tempo' value={this.state.settings.tempo} onChange={this.handleChange} min={1} />
           <p>Steps:</p>
-          <input type='text' name='steps' value={this.state.settings.steps} onChange={this.handleChange} />
+          <input type='number' name='steps' value={this.state.settings.steps} onChange={this.handleChange} min={1} />
+          <p>Lines Per Beat:</p>
+          <input type='number' name='linesPerBeat' value={this.state.settings.linesPerBeat} onChange={this.handleChange} min={1} />
         </div>
 
         {/* Bpm Indicator */}
