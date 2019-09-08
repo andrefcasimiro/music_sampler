@@ -27,6 +27,7 @@ type State = {
     currentPosition: number,
   },
   instruments: Array<{
+    id: string,
     name: string,
     samplePath: string,
   }>
@@ -48,15 +49,7 @@ class Sampler extends Component<Props, State> {
         currentPosition: 0,
       },
       instruments: [
-        {
-          name: 'Kick',
-          samplePath: kick,
-        },
-        {
-          name: 'Snare',
-          samplePath: snare,
-        }
-      ]
+      ],
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -159,15 +152,18 @@ class Sampler extends Component<Props, State> {
   addNewInstrument = () => {
     this.setState({
       instruments: this.state.instruments.concat({
+        id: String(this.state.instruments.length + Date.now()),
         name: 'S' + this.state.instruments.length,
         samplePath: '',
       })
     })
   }
 
-  onDelete = (_index: number) => {
-    const _newInstrumentList = this.state.instruments.filter((instrument, index) => {
-      return index !== _index
+  onDelete = (index: string) => {
+    console.log('received _ index: ', index)
+    console.log('instruments: ', this.state.instruments)
+    const _newInstrumentList = this.state.instruments.filter(instrument => {
+      return instrument.id !== index
     })
 
 
@@ -178,10 +174,11 @@ class Sampler extends Component<Props, State> {
 
   // Instrument Edit
 
-  editName = (index: number) => (event: SyntheticInputEvent<*>) => {
+  editName = (index: string) => (event: SyntheticInputEvent<*>) => {
     const value = event.target.value
     const instruments = this.state.instruments
-    instruments[index].name = value
+    const target = instruments.find(instrument => instrument.id === index)
+    instruments[instruments.indexOf(target)].name = value
 
     this.setState({
       instruments,
@@ -202,7 +199,12 @@ class Sampler extends Component<Props, State> {
 
 
              const instruments = this.state.instruments
-             instruments[index].samplePath = filePath
+             const target = instruments.find(instrument => instrument.id === index)
+             instruments[instruments.indexOf(target)].samplePath = filePath
+
+             this.setState({
+               instruments,
+             })
 
              // Update component state with new sample path
              this.setState({
@@ -237,20 +239,21 @@ class Sampler extends Component<Props, State> {
 
         {/* For Each Instrument, Have a Grid With The Steps */}
         <div className='instrumentGrid'>
-          {instruments.map((instrument, index) =>
+          {instruments.map((instrument, index) => (
             <Instrument
-              key={index}
+              key={instrument.id}
               instrument={instrument}
               sequencer={this.state.sequencer}
               settings={this.state.settings}
               audioManager={this.props.audioManager}
             >
-              <input type="text" value={instrument.name} onChange={(this.editName)(index)} />
-              <input type="file" onChange={(this.editSamplePath)(index)} />
+              <input type="text" value={instrument.name} onChange={(this.editName)(instrument.id)} />
+              <input type="file" onChange={(this.editSamplePath)(instrument.id)} />
 
-              <button onClick={() => this.onDelete(index)}>[Delete]</button>
+              <button onClick={() => this.onDelete(instrument.id)}>[Delete]</button>
             </Instrument>
-          )}
+          )
+        )}
         </div>
 
         {/* Add / remove instrument menu */}

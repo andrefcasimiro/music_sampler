@@ -28,7 +28,6 @@ function loadSample (url: string, audioContext: AudioContext) {
 }
 
 type Props = {
-  position: number,
   active: boolean,
   marker: boolean,
   instrument: {
@@ -36,22 +35,19 @@ type Props = {
     samplePath: string,
   },
   audioManager: AudioManager,
+  onSelect: Function,
+  selection: Array<boolean>,
+  selectionID: number,
 }
 
 type State = {
-  selected: boolean,
 }
 
 class Step extends Component<Props, State> {
   constructor (props: Props) {
     super (props)
 
-    this.state = {
-      selected: false,
-    }
-
     this.playSound = this.playSound.bind(this)
-    this.toggleSelect = this.toggleSelect.bind(this)
   }
 
   playSound = () => {
@@ -60,14 +56,8 @@ class Step extends Component<Props, State> {
     loadSample(instrument.samplePath, audioManager.context)
   }
 
-  toggleSelect = () => {
-    this.setState({
-      selected: !this.state.selected,
-    })
-  }
-
   render() {
-    const { selected } = this.state
+    const selected = this.props.selection[this.props.selectionID]
     const { marker, active } = this.props
 
     let className = 'step '
@@ -83,7 +73,7 @@ class Step extends Component<Props, State> {
     }
 
     return (
-      <div className={className} onClick={this.toggleSelect} />
+      <div className={className} onClick={() => this.props.onSelect(this.props.selectionID)} />
     )
   }
 
