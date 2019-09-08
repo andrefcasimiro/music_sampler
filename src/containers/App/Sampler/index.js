@@ -6,6 +6,14 @@ import kick from 'assets/data/samples/Kick.WAV'
 // $Ignore
 import snare from 'assets/data/samples/Snare.WAV'
 // $Ignore
+import clhat from 'assets/data/samples/ClosedHat.WAV'
+// $Ignore
+import ohat from 'assets/data/samples/OpenHat.WAV'
+// $Ignore
+import clap from 'assets/data/samples/Clap.WAV'
+// $Ignore
+import bass from 'assets/data/samples/Bass.wav'
+// $Ignore
 import pad from 'assets/data/samples/PAD.mp3'
 // $Ignore
 import axios from 'axios'
@@ -48,7 +56,7 @@ class Sampler extends Component<Props, State> {
     this.state = {
       settings: {
         tempo: 120,
-        steps: 16,
+        steps: window.innerWidth > 880 ? 16 : 8,
         linesPerBeat: 4,
       },
       sequencer: {
@@ -67,6 +75,26 @@ class Sampler extends Component<Props, State> {
         },
         {
           id: String(2 + Date.now()),
+          name: 'Closed Hat',
+          samplePath: clhat,
+        },
+        {
+          id: String(3 + Date.now()),
+          name: 'Open Hat',
+          samplePath: ohat,
+        },
+        {
+          id: String(4 + Date.now()),
+          name: 'Clap',
+          samplePath: clap,
+        },
+        {
+          id: String(5 + Date.now()),
+          name: 'Bass',
+          samplePath: bass,
+        },
+        {
+          id: String(6 + Date.now()),
           name: 'Pad',
           samplePath: pad,
         },
@@ -200,7 +228,9 @@ class Sampler extends Component<Props, State> {
   editSamplePath = (index: string) => (event: SyntheticInputEvent<*>) => {
     const data = new FormData()
     data.append('file', event.target.files[0])
-    axios.post('http://localhost:8000/upload', data, {})
+
+    const postURI = 'http://localhost:8000/upload'
+    axios.post(postURI, data, {})
          .then(response => {
            if (response.status === 200) {
              const filePath = 'public/uploads/' + response.data.filename

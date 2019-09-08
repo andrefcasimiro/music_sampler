@@ -163,3 +163,20 @@ p {
 .buttonRemove {
   background: none;
 }
+
+
+
+@media all and (max-width: 880px) {
+  .setting {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .setting * {
+    margin-top: 1rem;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+}
