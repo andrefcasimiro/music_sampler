@@ -7,3 +7,23 @@
   min-height: 10rem;
   background: rgba(0, 0, 0, 0.5);
 }
+
+.edit {
+  display: flex;
+  flex-direction: column;
+  padding: 0.1rem;
+  border: 1px solid red;
+  justify-content: space-evenly;
+}
+
+input[type=text] {
+  width: 80%;
+  margin: 1rem;
+  font-size: 1rem;
+  border-radius: 0;
+  border: none;
+  background: none;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}

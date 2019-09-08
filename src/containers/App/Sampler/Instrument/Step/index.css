@@ -9,6 +9,13 @@
   justify-content: center;
   align-items: center;
   color: white;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: .2s ease;
+}
+
+.step:hover {
+  opacity: 1;
 }
 
 .marker {
@@ -17,4 +24,9 @@
 
 .active {
   background: green;
+}
+
+.selected {
+  background: cyan;
+  margin: 0.1rem;
 }

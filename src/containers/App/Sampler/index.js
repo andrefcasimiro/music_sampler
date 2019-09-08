@@ -40,7 +40,7 @@ class Sampler extends Component<Props, State> {
       settings: {
         tempo: 120,
         steps: 16,
-        linesPerBeat: 2,
+        linesPerBeat: 4,
       },
       sequencer: {
         currentPosition: 0,
