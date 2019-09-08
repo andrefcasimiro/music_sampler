@@ -2,11 +2,17 @@
 import React, { Component } from 'react'
 import Instrument from './Instrument'
 // $Ignore
-import kick from 'assets/data/samples/TR-909/Kick.WAV'
+import kick from 'assets/data/samples/Kick.WAV'
 // $Ignore
-import snare from 'assets/data/samples/TR-909/Snare.WAV'
+import snare from 'assets/data/samples/Snare.WAV'
+// $Ignore
+import pad from 'assets/data/samples/PAD.mp3'
 // $Ignore
 import axios from 'axios'
+// $Ignore
+import { MdFileUpload as UploadIcon } from "react-icons/md"
+// $Ignore
+import { FiTrash2 as RemoveIcon } from "react-icons/fi"
 import { generateContentBasedOnSteps } from './helpers'
 import AudioManager from 'data/classes/AudioManager'
 import './index.css'
@@ -49,22 +55,38 @@ class Sampler extends Component<Props, State> {
         currentPosition: 0,
       },
       instruments: [
+        {
+          id: String(0 + Date.now()),
+          name: 'Kick',
+          samplePath: kick,
+        },
+        {
+          id: String(1 + Date.now()),
+          name: 'Snare',
+          samplePath: snare,
+        },
+        {
+          id: String(2 + Date.now()),
+          name: 'Pad',
+          samplePath: pad,
+        },
       ],
     }
 
+    // Sequencer Logic
     this.handleChange = this.handleChange.bind(this)
     this.handlePlay = this.handlePlay.bind(this)
     this.manageNextPosition = this.manageNextPosition.bind(this)
+    // Add Instruments
     this.addNewInstrument = this.addNewInstrument.bind(this)
+    // Delete Instruments
     this.onDelete = this.onDelete.bind(this)
-
-
+    // Edit A Instrument
     this.editName = this.editName.bind(this)
     this.editSamplePath = this.editSamplePath.bind(this)
   }
 
   // Song Settings
-
   handleChange = (event: SyntheticInputEvent<*>) => {
     const name = event.target.name
     const value = event.target.value
@@ -78,7 +100,6 @@ class Sampler extends Component<Props, State> {
   }
 
   // Sequencer Logic Here
-
   manageNextPosition = () => {
     const { currentPosition } = this.state.sequencer
     const { steps } = this.state.settings
@@ -103,14 +124,7 @@ class Sampler extends Component<Props, State> {
   }
 
   handlePlay = () => {
-    // Every Beats Per Minute / 60, Advance One Position
-    // If Next Position Is After Number Of Steps, Return To 0
-
-
-    // 1 minute = 60 seconds = 60,000 milliseconds
-    // Single Beat- Quarter Note
     // 60 000 / (bpm / linesPerBeat) = desired ms for a quarter note
-
     // Never allow tempo or lpb to be 0 or it will produce insane fast intervals
     const tempo = this.state.settings.tempo || 1
     const linesPerBeat = this.state.settings.linesPerBeat || 1
@@ -141,11 +155,9 @@ class Sampler extends Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.audioManagerAllowed) {
-      this.handlePlay()
-    } else {
-      this.handleStop()
-    }
+    nextProps.audioManagerAllowed
+      ? this.handlePlay()
+      : this.handleStop()
   }
 
   // Add new instruments
@@ -153,7 +165,7 @@ class Sampler extends Component<Props, State> {
     this.setState({
       instruments: this.state.instruments.concat({
         id: String(this.state.instruments.length + Date.now()),
-        name: 'S' + this.state.instruments.length,
+        name: 'Instrument ' + this.state.instruments.length,
         samplePath: '',
       })
     })
@@ -185,26 +197,16 @@ class Sampler extends Component<Props, State> {
     })
   }
 
-  editSamplePath = (index: number) => (event: SyntheticInputEvent<*>) => {
+  editSamplePath = (index: string) => (event: SyntheticInputEvent<*>) => {
     const data = new FormData()
     data.append('file', event.target.files[0])
     axios.post('http://localhost:8000/upload', data, {})
          .then(response => {
-           console.log(response)
-           console.log(response.statusText)
            if (response.status === 200) {
              const filePath = 'public/uploads/' + response.data.filename
-
-             console.log('new file path: ', filePath)
-
-
              const instruments = this.state.instruments
              const target = instruments.find(instrument => instrument.id === index)
              instruments[instruments.indexOf(target)].samplePath = filePath
-
-             this.setState({
-               instruments,
-             })
 
              // Update component state with new sample path
              this.setState({
@@ -217,7 +219,6 @@ class Sampler extends Component<Props, State> {
 
 
   render() {
-
     const instruments = this.state.instruments
 
     return (
@@ -238,23 +239,29 @@ class Sampler extends Component<Props, State> {
         </div>
 
         {/* For Each Instrument, Have a Grid With The Steps */}
-        <div className='instrumentGrid'>
-          {instruments.map((instrument, index) => (
-            <Instrument
-              key={instrument.id}
-              instrument={instrument}
-              sequencer={this.state.sequencer}
-              settings={this.state.settings}
-              audioManager={this.props.audioManager}
-            >
-              <input type="text" value={instrument.name} onChange={(this.editName)(instrument.id)} />
-              <input type="file" onChange={(this.editSamplePath)(instrument.id)} />
+        {instruments.length > 0 &&
+          <div className='instrumentGrid'>
+            {instruments.map((instrument, index) => (
+              <Instrument
+                key={instrument.id}
+                instrument={instrument}
+                sequencer={this.state.sequencer}
+                settings={this.state.settings}
+                audioManager={this.props.audioManager}
+              >
+                <input type="text" value={instrument.name} onChange={(this.editName)(instrument.id)} />
+                
+                <div className="row">
+                  <input name={instrument.id} id={instrument.id} className="inputfile" type="file" onChange={(this.editSamplePath)(instrument.id)} />
+                  <label for={instrument.id}><UploadIcon /></label>
 
-              <button onClick={() => this.onDelete(instrument.id)}>[Delete]</button>
-            </Instrument>
-          )
-        )}
-        </div>
+                  <button className="buttonRemove" onClick={() => this.onDelete(instrument.id)}><RemoveIcon /></button>
+                </div>
+              </Instrument>
+            )
+          )}
+          </div>
+        }
 
         {/* Add / remove instrument menu */}
         <div className='addNewInstrument' onClick={this.addNewInstrument}>

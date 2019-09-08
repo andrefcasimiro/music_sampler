@@ -1,6 +1,10 @@
 // @flow
 import React, { Component } from 'react'
 import AudioManager from 'data/classes/AudioManager'
+import {
+  IoIosPlay as PlayIcon,
+  IoIosPause as PauseIcon,
+ } from "react-icons/io"
 import Sampler from './Sampler'
 import './index.css'
 
@@ -37,7 +41,10 @@ class App extends Component<Props, State> {
     return (
       <div className="container">
         <button onClick={this.resumeAudioContext}>
-          {this.state.audioManagerAllowed ? `Disable` : `Enable`} Audio
+          {this.state.audioManagerAllowed
+            ? <span><PauseIcon /> Stop</span>
+            : <span><PlayIcon /> Play</span>
+          }
         </button>
 
         <Sampler

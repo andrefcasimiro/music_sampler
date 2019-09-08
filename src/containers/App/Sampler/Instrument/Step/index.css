@@ -12,10 +12,23 @@
   cursor: pointer;
   opacity: 0.8;
   transition: .2s ease;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
 .step:hover {
+  cursor: pointer;
   opacity: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 3px solid cyan;
+}
+
+.default:hover{
+  background: none;
+}
+
+.stepSelected:hover {
+  opacity: 1;
+  background: cyan;
 }
 
 .stepMarker {

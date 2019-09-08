@@ -13,29 +13,3 @@
   border: 1px solid red;
   justify-content: space-evenly;
 }
-
-input[type=text] {
-  width: 80%;
-  margin: 1rem;
-  font-size: 1rem;
-  border-radius: 0;
-  border: none;
-  background: none;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-}
-
-input[type=file] {
-  display: flex;
-  width: 80%;
-  margin: 1rem;
-  font-size: 1rem;
-  border-radius: 0;
-  border: none;
-  background: none;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  flex-direction: column;
-}

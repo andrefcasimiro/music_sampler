@@ -28,6 +28,42 @@ input {
   margin: 0 1rem;
 }
 
+
+input[type=text] {
+  width: 80%;
+  margin: 1rem;
+  font-size: 1rem;
+  border-radius: 0;
+  border: none;
+  background: none;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  opacity: 0.5;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+  opacity: 1;
+}
+
+
 p {
   font-size: 1.3rem;
   font-family: 'Arial';
@@ -101,4 +137,29 @@ p {
   margin-top: 3rem;
   width: 100%;
   justify-self: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  padding: 0.2rem;
+  justify-content: space-between;
+  min-width: 5rem;
+  align-items: center;
+}
+
+.row button {
+  opacity: 0.5;
+}
+
+.row button:active {
+  opacity: 0.5;
+}
+
+.row button:hover {
+  opacity: 1;
+}
+
+.buttonRemove {
+  background: none;
 }
