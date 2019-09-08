@@ -5,6 +5,8 @@ import Instrument from './Instrument'
 import kick from 'assets/data/samples/TR-909/Kick.WAV'
 // $Ignore
 import snare from 'assets/data/samples/TR-909/Snare.WAV'
+// $Ignore
+import axios from 'axios'
 import { generateContentBasedOnSteps } from './helpers'
 import AudioManager from 'data/classes/AudioManager'
 import './index.css'
@@ -47,11 +49,11 @@ class Sampler extends Component<Props, State> {
       },
       instruments: [
         {
-          name: 'Instrument 1',
+          name: 'Kick',
           samplePath: kick,
         },
         {
-          name: 'Instrument 2',
+          name: 'Snare',
           samplePath: snare,
         }
       ]
@@ -60,6 +62,12 @@ class Sampler extends Component<Props, State> {
     this.handleChange = this.handleChange.bind(this)
     this.handlePlay = this.handlePlay.bind(this)
     this.manageNextPosition = this.manageNextPosition.bind(this)
+    this.addNewInstrument = this.addNewInstrument.bind(this)
+    this.onDelete = this.onDelete.bind(this)
+
+
+    this.editName = this.editName.bind(this)
+    this.editSamplePath = this.editSamplePath.bind(this)
   }
 
   // Song Settings
@@ -147,8 +155,68 @@ class Sampler extends Component<Props, State> {
     }
   }
 
+  // Add new instruments
+  addNewInstrument = () => {
+    this.setState({
+      instruments: this.state.instruments.concat({
+        name: 'S' + this.state.instruments.length,
+        samplePath: '',
+      })
+    })
+  }
+
+  onDelete = (_index: number) => {
+    const _newInstrumentList = this.state.instruments.filter((instrument, index) => {
+      return index !== _index
+    })
+
+
+    this.setState({
+      instruments: _newInstrumentList,
+    })
+  }
+
+  // Instrument Edit
+
+  editName = (index: number) => (event: SyntheticInputEvent<*>) => {
+    const value = event.target.value
+    const instruments = this.state.instruments
+    instruments[index].name = value
+
+    this.setState({
+      instruments,
+    })
+  }
+
+  editSamplePath = (index: number) => (event: SyntheticInputEvent<*>) => {
+    const data = new FormData()
+    data.append('file', event.target.files[0])
+    axios.post('http://localhost:8000/upload', data, {})
+         .then(response => {
+           console.log(response)
+           console.log(response.statusText)
+           if (response.status === 200) {
+             const filePath = 'public/uploads/' + response.data.filename
+
+             console.log('new file path: ', filePath)
+
+
+             const instruments = this.state.instruments
+             instruments[index].samplePath = filePath
+
+             // Update component state with new sample path
+             this.setState({
+               instruments,
+             })
+           }
+         })
+         .catch(err => console.log('upload failed: ', err))
+  }
+
 
   render() {
+
+    const instruments = this.state.instruments
 
     return (
       <div className="settingsContainer">
@@ -169,15 +237,26 @@ class Sampler extends Component<Props, State> {
 
         {/* For Each Instrument, Have a Grid With The Steps */}
         <div className='instrumentGrid'>
-          {this.state.instruments.map((instrument, index) =>
+          {instruments.map((instrument, index) =>
             <Instrument
               key={index}
               instrument={instrument}
               sequencer={this.state.sequencer}
               settings={this.state.settings}
               audioManager={this.props.audioManager}
-            />
+            >
+              <input type="text" value={instrument.name} onChange={(this.editName)(index)} />
+              <input type="file" onChange={(this.editSamplePath)(index)} />
+
+              <button onClick={() => this.onDelete(index)}>[Delete]</button>
+            </Instrument>
           )}
+        </div>
+
+        {/* Add / remove instrument menu */}
+        <div className='addNewInstrument' onClick={this.addNewInstrument}>
+          <div className='emptyStep'><p>+</p></div> {/* Simple offset to match the instrument grid logic below */}
+          {generateContentBasedOnSteps('placeholder', this.state)}
         </div>
       </div>
     )

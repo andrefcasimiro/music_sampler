@@ -46,9 +46,9 @@ p {
 .instrumentGrid {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
   width: 100%;
   min-height: 10rem;
+  margin: 0;
 }
 
 .default {
@@ -60,4 +60,45 @@ p {
 .empty {
   background: none;
   border: none;
+}
+
+/* Add New Instrument */
+.addNewInstrument {
+  display: flex;
+  width: 100%;
+  min-height: 10rem;
+  flex-direction: row;
+  opacity: 0.1;
+  transition: 0.2s ease;
+}
+
+.addNewInstrument:hover {
+  opacity: 0.7;
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+
+
+.addInstrument {
+  filter: blur(2px);
+  display: flex;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  min-height: 4rem;
+}
+
+.emptyStep {
+  flex-grow: 1;
+  min-width: 5rem;
+  background: rgba(0, 0, 0, 0.52);
+}
+
+.emptyStep * {
+  display: flex;
+  flex-direction: column;
+  font-size: 3.6rem;
+  text-align: center;
+  margin-top: 3rem;
+  width: 100%;
+  justify-self: center;
 }

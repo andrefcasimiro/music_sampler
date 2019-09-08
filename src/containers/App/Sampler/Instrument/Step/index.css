@@ -3,14 +3,14 @@
   display: flex;
   background: rgba(0, 0, 0, 0.5);
   flex-grow: 1;
-  border: 1px solid pink;
+  border: 0.1px solid rgba(0, 0, 0, 0.1);
   min-height: 2rem;
   min-width: 2rem;
   justify-content: center;
   align-items: center;
   color: white;
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.8;
   transition: .2s ease;
 }
 
@@ -18,15 +18,15 @@
   opacity: 1;
 }
 
-.marker {
+.stepMarker {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.active {
-  background: green;
+.stepActive {
+  border-bottom: 5px solid rgb(60, 60, 60);
 }
 
-.selected {
+.stepSelected {
   background: cyan;
-  margin: 0.1rem;
 }
+

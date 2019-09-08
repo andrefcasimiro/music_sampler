@@ -9,7 +9,6 @@ function loadSample (url: string, audioContext: AudioContext) {
 
   url = url.replace('public/', '/')
 
-  console.log('new filepath: ', url)
   request.open('GET', url, true)
   request.responseType = 'arraybuffer'
 
@@ -22,7 +21,7 @@ function loadSample (url: string, audioContext: AudioContext) {
       source.buffer = buffer
       source.connect(audioContext.destination)
       source.start(0)
-    }, () => console.log('error'))
+    }, () => {})
   }
 
   request.send()
@@ -69,17 +68,15 @@ class Step extends Component<Props, State> {
 
   render() {
     const { selected } = this.state
-    const { marker, active, position } = this.props
+    const { marker, active } = this.props
 
     let className = 'step '
-    className = marker ? className + 'marker ' : className
-    className = active ? className + 'active ' : className
-    className = selected ? className + 'selected ' : className
+    className = marker ? className + 'stepMarker ' : className
+    className = active ? className + 'stepActive ' : className
+    className = selected ? className + 'stepSelected ' : className
 
     // If sequencer has reached this step
     if (active) {
-
-      // If step has a note in this position
       if (selected) {
         this.playSound()
       }

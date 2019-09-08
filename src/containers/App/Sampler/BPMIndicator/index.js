@@ -21,8 +21,8 @@ class BPMIndicator extends Component<Props, State> {
     const { marker, active } = this.props
 
     let className = 'bpm '
-    className = marker ? className + 'marker ' : className
-    className = active ? className + 'active ' : className
+    className = marker ? className + 'bpmMarker ' : className
+    className = active ? className + 'bpmActive ' : className
 
     return (
       <div className={className} />
