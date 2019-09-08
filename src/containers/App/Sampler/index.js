@@ -200,8 +200,6 @@ class Sampler extends Component<Props, State> {
   }
 
   onDelete = (index: string) => {
-    console.log('received _ index: ', index)
-    console.log('instruments: ', this.state.instruments)
     const _newInstrumentList = this.state.instruments.filter(instrument => {
       return instrument.id !== index
     })

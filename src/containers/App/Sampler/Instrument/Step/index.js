@@ -4,9 +4,10 @@ import './index.css'
 import AudioManager from 'data/classes/AudioManager'
 
 
-function loadSample (url: string, audioContext: AudioContext) {
+function loadSample (url: string, audioContext: AudioContext, callback: (file: any, originalPath: string) => mixed) {
   var request = new XMLHttpRequest()
-
+  
+  var originalUrl = url
   url = url.replace('public/', '/')
 
   request.open('GET', url, true)
@@ -21,6 +22,8 @@ function loadSample (url: string, audioContext: AudioContext) {
       source.buffer = buffer
       source.connect(audioContext.destination)
       source.start(0)
+
+      callback(buffer, originalUrl) // Cache the sample
     }, () => {})
   }
 
@@ -41,11 +44,19 @@ type Props = {
 }
 
 type State = {
+  cachedSample: ?{
+    file: any,
+    originalPath: string,
+  },
 }
 
 class Step extends Component<Props, State> {
   constructor (props: Props) {
     super (props)
+
+    this.state = {
+      cachedSample: undefined,
+    }
 
     this.playSound = this.playSound.bind(this)
   }
@@ -53,7 +64,27 @@ class Step extends Component<Props, State> {
   playSound = () => {
     const { instrument, audioManager } = this.props
 
-    loadSample(instrument.samplePath, audioManager.context)
+    if (this.state.cachedSample && this.state.cachedSample.file) {
+      // Now for the fun part :)
+      var source = audioManager.context.createBufferSource(); // creates a sound source
+      source.buffer = this.state.cachedSample.file
+      source.connect(audioManager.context.destination)
+      source.start(0)
+    } else {
+      loadSample(instrument.samplePath, audioManager.context, (file, originalPath) => this.setState({ cachedSample: { file: file, originalPath: originalPath } }))
+    }
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    if (!this.state.cachedSample) { return }
+    
+    if (this.state.cachedSample.originalPath !== newProps.instrument.samplePath) {
+      console.log('new file was uploaded, we need to remove the cached sample and make the client request the new sample')
+
+      this.setState({
+        cachedSample: undefined,
+      })
+    }
   }
 
   render() {
