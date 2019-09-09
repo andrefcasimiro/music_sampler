@@ -9,8 +9,10 @@ var whitelist = [
   'http://localhost:3000/',
   'http://localhost:3000',
 ]
+
 var corsOptions = {
   origin: function (origin, callback) {
+    console.log('origin: ', origin)
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
@@ -20,6 +22,7 @@ var corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+app.options('*', cors()) // include before other routes
 app.use(cors(corsOptions))
 
 var storage = multer.diskStorage({
@@ -33,7 +36,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage }).single('file')
 
-app.post('/upload', function (req, res) {
+app.post('/upload', cors(corsOptions), function (req, res) {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err)
