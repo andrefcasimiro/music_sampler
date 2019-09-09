@@ -6,7 +6,24 @@ var cors = require('cors')
 app.use(express.static(__dirname + '/public'));
 
 console.log('using: ', __dirname + '/public')
-app.use(cors())
+
+var whitelist = [
+  'https://react-drum-machine-sampler.herokuapp.com/', 
+  'http://react-drum-machine-sampler.herokuapp.com/',
+  'https://react-drum-machine-sampler.herokuapp.com', 
+  'http://react-drum-machine-sampler.herokuapp.com',
+]
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+app.use(cors(corsOptions))
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -17,13 +34,11 @@ var storage = multer.diskStorage({
   },
 })
 
-console.log('storage: ', storage)
 
 var upload = multer({ storage }).single('file')
 
 app.post('/upload', function (req, res) {
-  console.log('req: ', req)
-  console.log('res: ', res)
+  console.log('uploading...')
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err)
