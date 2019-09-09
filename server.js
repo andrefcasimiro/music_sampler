@@ -2,6 +2,7 @@ var express = require('express')
 var app = express()
 var multer = require('multer')
 var cors = require('cors')
+var path = require('path')
 
 var whitelist = [
   'https://react-music-sampler.herokuapp.com/',
@@ -25,9 +26,11 @@ var corsOptions = {
 app.options('*', cors()) // include before other routes
 app.use(cors(corsOptions))
 
+app.use(express.static(path.join(__dirname, 'public/')));
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/uploads')
+    cb(null, path.join(__dirname, 'public/uploads'))
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname)
