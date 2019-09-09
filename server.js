@@ -3,10 +3,9 @@ var app = express()
 var multer = require('multer')
 var cors = require('cors')
 var path = require('path')
+var proxy = require('http-proxy-middleware')
 
 var whitelist = [
-  'https://andrefcasimiro.github.io/music_sampler/',
-  'https://andrefcasimiro.github.io/music_sampler',
   'https://react-drum-machine-sampler.herokuapp.com/',
   'https://react-drum-machine-sampler.herokuapp.com',
   'https://andrefcasimiro.github.io',
@@ -25,7 +24,22 @@ var corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-//
+
+app.use('/upload', proxy({
+  target: 'https://react-drum-machine-sampler.herokuapp.com',
+  changeOrigin: true,
+}));
+
+app.use('/upload', proxy({
+  target: 'http://localhost:3000/',
+  changeOrigin: true,
+}));
+
+app.use('*', proxy({
+  target: 'https://react-drum-machine-sampler.herokuapp.com',
+  changeOrigin: true,
+}));
+
 
 app.use(cors(corsOptions))
 
@@ -41,7 +55,6 @@ var storage = multer.diskStorage({
 var upload = multer({ storage }).single('file')
 
 app.post('/upload', function (req, res) {
-  console.log('uploading...')
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err)
@@ -53,8 +66,8 @@ app.post('/upload', function (req, res) {
   })
 })
 
-app.listen(8000, function() {
-  console.log('Running on port 8000')
-  console.log('path.join(__dirname, .....)', path.join(__dirname, 'public'))
 
+
+app.listen(8000, function() {
+  console.log('Running on port 8000 :)')
 })
