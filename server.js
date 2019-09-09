@@ -47,6 +47,7 @@ var upload = multer({ storage }).single('file')
 
 app.post('/upload', cors(corsOptions), function (req, res) {
   console.log('uploading...')
+  return res.status(200) // If this is ok, <i know the problem is with the below line
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err)
