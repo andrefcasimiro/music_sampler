@@ -228,9 +228,8 @@ class Sampler extends Component<Props, State> {
     data.append('file', event.target.files[0])
     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-
     const postURI = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-      ? 'https://react-drum-machine-sampler.herokuapp.com/upload'
+      ? 'http://localhost:8000/upload'
       : 'https://react-drum-machine-sampler.herokuapp.com/upload'
       
     axios.post(postURI, data, config)
