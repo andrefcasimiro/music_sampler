@@ -25,6 +25,13 @@ var corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  res.sendfile(path.join(__dirname = 'public/index.html'));
+})
+
 app.use(cors(corsOptions))
 
 var storage = multer.diskStorage({
@@ -38,7 +45,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage }).single('file')
 
-app.get('/upload', cors(corsOptions), function (req, res) {
+app.post('/upload', cors(corsOptions), function (req, res) {
   console.log('uploading...')
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
