@@ -4,6 +4,8 @@ var multer = require('multer')
 var cors = require('cors')
 
 app.use(express.static(__dirname + '/public'));
+
+console.log('using: ', __dirname + '/public')
 app.use(cors())
 
 var storage = multer.diskStorage({
@@ -15,9 +17,13 @@ var storage = multer.diskStorage({
   },
 })
 
+console.log('storage: ', storage)
+
 var upload = multer({ storage }).single('file')
 
 app.post('/upload', function (req, res) {
+  console.log('req: ', req)
+  console.log('res: ', res)
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err)
