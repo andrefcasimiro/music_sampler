@@ -232,10 +232,6 @@ class Sampler extends Component<Props, State> {
       : 'https://react-drum-machine-sampler.herokuapp.com/upload'
 
     axios.post(postURI, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Access-Control-Allow-Origin': '*',
-      },
     })
          .then(response => {
            console.log(response)
