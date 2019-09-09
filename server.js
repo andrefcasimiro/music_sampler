@@ -18,8 +18,11 @@ var corsOptions = {
     } else {
       callback(new Error('Not allowed by CORS'))
     }
-  }
+  },
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
+
+app.use(cors(corsOptions))
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -34,7 +37,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage }).single('file')
 
 app.options("*",function(req,res,next){
-  res.header("Access-Control-Allow-Origin", req.get("Origin")||"*");
+  res.header("Access-Control-Allow-Origin", req.post("Origin")||"*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
    //other headers here
     res.status(200).end();
