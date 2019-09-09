@@ -233,21 +233,21 @@ class Sampler extends Component<Props, State> {
 
     axios.post(postURI, data, {
     })
-         .then(response => {
-           console.log(response)
-           if (response.status === 200) {
-             const filePath = 'public/uploads/' + response.data.filename
-             const instruments = this.state.instruments
-             const target = instruments.find(instrument => instrument.id === index)
-             instruments[instruments.indexOf(target)].samplePath = filePath
+      .then(response => {
+        console.log(response)
+        if (response.status === 200) {
+          const filePath = 'public/uploads/' + response.data.filename
+          const instruments = this.state.instruments
+          const target = instruments.find(instrument => instrument.id === index)
+          instruments[instruments.indexOf(target)].samplePath = filePath
 
-             // Update component state with new sample path
-             this.setState({
-               instruments,
-             })
-           }
-         })
-         .catch(err => console.log('upload failed: ', err))
+          // Update component state with new sample path
+          this.setState({
+            instruments,
+          })
+        }
+      })
+      .catch(err => console.log('upload failed: ', err))
   }
 
 
