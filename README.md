@@ -1,4 +1,4 @@
-## Oh Oh, It's A Music Sampler!
+# React Music Sampler
 A music sampler made with React and Node! You can upload your own samples if you clone the project and run it locally :-)
 
 ## Live Demo:
