@@ -45,9 +45,21 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage }).single('file')
 
-app.post('/upload', cors(corsOptions), function (req, res) {
+app.post('*', function (req, res) {
   console.log('uploading...')
-  return res.status(200) // If this is ok, <i know the problem is with the below line
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err)
+    } else if (err) {
+      return res.status(500).json(err)
+    }
+
+    return res.status(200).send(req.file)
+  })
+})
+
+app.post('/upload', function (req, res) {
+  console.log('uploading...')
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err)
