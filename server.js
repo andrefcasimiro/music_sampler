@@ -1,9 +1,17 @@
 var express = require('express')
 var app = express()
 var multer = require('multer')
+var path = require('path')
 var cors = require('cors')
 
-app.use(express.static(__dirname + '/public'));
+//production mode
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  app.get('*', (req, res) => {
+    res.sendfile(path.join(__dirname = 'build/index.html'));
+  })
+}
 
 console.log('using: ', __dirname + '/public')
 
