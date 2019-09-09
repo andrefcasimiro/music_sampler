@@ -26,14 +26,13 @@ var corsOptions = {
 }
 
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+//
 
 app.use(cors(corsOptions))
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/uploads')
+    cb(null, '/uploads')
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname)
@@ -57,6 +56,4 @@ app.post('/upload', function (req, res) {
 
 app.listen(8000, function() {
   console.log('Running on port 8000')
-  console.log('path.join(__dirname, .....)', path.join(__dirname, 'public'))
-
 })
