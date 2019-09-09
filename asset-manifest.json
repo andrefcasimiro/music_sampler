@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/music_machine/static/css/main.b1af37ee.chunk.css",
+    "main.js": "/music_machine/static/js/main.3f3a10c6.chunk.js",
+    "main.js.map": "/music_machine/static/js/main.3f3a10c6.chunk.js.map",
+    "runtime~main.js": "/music_machine/static/js/runtime~main.de1d260f.js",
+    "runtime~main.js.map": "/music_machine/static/js/runtime~main.de1d260f.js.map",
+    "static/js/2.0e42d228.chunk.js": "/music_machine/static/js/2.0e42d228.chunk.js",
+    "static/js/2.0e42d228.chunk.js.map": "/music_machine/static/js/2.0e42d228.chunk.js.map",
+    "index.html": "/music_machine/index.html",
+    "precache-manifest.a2231b1a03435d5c8ce0eaa9ec075303.js": "/music_machine/precache-manifest.a2231b1a03435d5c8ce0eaa9ec075303.js",
+    "service-worker.js": "/music_machine/service-worker.js",
+    "static/css/main.b1af37ee.chunk.css.map": "/music_machine/static/css/main.b1af37ee.chunk.css.map",
+    "static/media/Bass.wav": "/music_machine/static/media/Bass.a8a60608.wav",
+    "static/media/Clap.WAV": "/music_machine/static/media/Clap.ce5193f6.WAV",
+    "static/media/ClosedHat.WAV": "/music_machine/static/media/ClosedHat.bf48fb20.WAV",
+    "static/media/Kick.WAV": "/music_machine/static/media/Kick.6471470d.WAV",
+    "static/media/OpenHat.WAV": "/music_machine/static/media/OpenHat.67b2afb3.WAV",
+    "static/media/PAD.mp3": "/music_machine/static/media/PAD.9c1dc1af.mp3",
+    "static/media/Snare.WAV": "/music_machine/static/media/Snare.d76d77c9.WAV"
+  }
+}
