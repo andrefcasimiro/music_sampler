@@ -1,19 +1,7 @@
 var express = require('express')
 var app = express()
 var multer = require('multer')
-var path = require('path')
 var cors = require('cors')
-
-//production mode
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'build')));
-
-  app.get('*', (req, res) => {
-    res.sendfile(path.join(__dirname = 'build/index.html'));
-  })
-}
-
-console.log('using: ', __dirname + '/public')
 
 var whitelist = [
   'https://react-drum-machine-sampler.herokuapp.com/', 
@@ -25,7 +13,6 @@ var whitelist = [
 ]
 var corsOptions = {
   origin: function (origin, callback) {
-    console.log('origin: ', origin)
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
@@ -33,8 +20,6 @@ var corsOptions = {
     }
   }
 }
-
-app.use(cors(corsOptions))
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -47,6 +32,13 @@ var storage = multer.diskStorage({
 
 
 var upload = multer({ storage }).single('file')
+
+app.options("*",function(req,res,next){
+  res.header("Access-Control-Allow-Origin", req.get("Origin")||"*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   //other headers here
+    res.status(200).end();
+});
 
 app.post('/upload', cors(corsOptions), function (req, res) {
   console.log('uploading...')

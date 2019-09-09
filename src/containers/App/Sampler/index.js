@@ -228,11 +228,9 @@ class Sampler extends Component<Props, State> {
     data.append('file', event.target.files[0])
 
     const postURI = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-      ? 'https://react-drum-machine-sampler.herokuapp.com/upload'
-      : 'https://react-drum-machine-sampler.herokuapp.com/upload'
+      ? 'http://localhost:8000/upload'
+      : 'https://react-drum-machine-sampler.herokuapp.com:/upload'
       
-    axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-
     axios.post(postURI, data, {})
          .then(response => {
            console.log(response)
