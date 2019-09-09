@@ -4,10 +4,8 @@ var multer = require('multer')
 var cors = require('cors')
 
 var whitelist = [
-  'https://react-drum-machine-sampler.herokuapp.com/',
-  'https://react-drum-machine-sampler.herokuapp.com',
-  'https://andrefcasimiro.github.io',
-  'https://andrefcasimiro.github.io/',
+  'https://react-music-sampler.herokuapp.com/',
+  'https://react-music-sampler.herokuapp.com',
   'http://localhost:3000/',
   'http://localhost:3000',
 ]
