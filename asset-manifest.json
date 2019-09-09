@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/music_sampler/static/css/main.b1af37ee.chunk.css",
-    "main.js": "/music_sampler/static/js/main.3f3a10c6.chunk.js",
-    "main.js.map": "/music_sampler/static/js/main.3f3a10c6.chunk.js.map",
+    "main.js": "/music_sampler/static/js/main.4f517185.chunk.js",
+    "main.js.map": "/music_sampler/static/js/main.4f517185.chunk.js.map",
     "runtime~main.js": "/music_sampler/static/js/runtime~main.6cc1b882.js",
     "runtime~main.js.map": "/music_sampler/static/js/runtime~main.6cc1b882.js.map",
     "static/js/2.0e42d228.chunk.js": "/music_sampler/static/js/2.0e42d228.chunk.js",
     "static/js/2.0e42d228.chunk.js.map": "/music_sampler/static/js/2.0e42d228.chunk.js.map",
     "index.html": "/music_sampler/index.html",
-    "precache-manifest.e30acfd5561ea0a22dcaa9bdc4c21cde.js": "/music_sampler/precache-manifest.e30acfd5561ea0a22dcaa9bdc4c21cde.js",
+    "precache-manifest.c199f525e53493225cfaefe7f25f8339.js": "/music_sampler/precache-manifest.c199f525e53493225cfaefe7f25f8339.js",
     "service-worker.js": "/music_sampler/service-worker.js",
     "static/css/main.b1af37ee.chunk.css.map": "/music_sampler/static/css/main.b1af37ee.chunk.css.map",
     "static/media/Bass.wav": "/music_sampler/static/media/Bass.a8a60608.wav",
