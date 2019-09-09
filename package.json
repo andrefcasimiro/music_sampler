@@ -20,7 +20,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "node server.js & yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,5 +38,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://andrefcasimiro.github.io/music_sampler/"
+  "homepage": "https://react-drum-machine-sampler.herokuapp.com/"
 }

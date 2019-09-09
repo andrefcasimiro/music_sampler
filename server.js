@@ -7,6 +7,10 @@ var path = require('path')
 var whitelist = [
   'https://andrefcasimiro.github.io/music_sampler/',
   'https://andrefcasimiro.github.io/music_sampler',
+  'https://react-drum-machine-sampler.herokuapp.com/',
+  'https://react-drum-machine-sampler.herokuapp.com',
+  'https://andrefcasimiro.github.io',
+  'https://andrefcasimiro.github.io/',
   'http://localhost:3000/',
   'http://localhost:3000',
 ]
