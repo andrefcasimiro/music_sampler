@@ -9,12 +9,15 @@ console.log('using: ', __dirname + '/public')
 
 var whitelist = [
   'https://react-drum-machine-sampler.herokuapp.com/', 
-  'http://react-drum-machine-sampler.herokuapp.com/',
   'https://react-drum-machine-sampler.herokuapp.com', 
+  'http://react-drum-machine-sampler.herokuapp.com/',
   'http://react-drum-machine-sampler.herokuapp.com',
+  'http://localhost:3000/',
+  'http://localhost:3000',
 ]
 var corsOptions = {
   origin: function (origin, callback) {
+    console.log('origin: ', origin)
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
