@@ -226,13 +226,12 @@ class Sampler extends Component<Props, State> {
   editSamplePath = (index: string) => (event: SyntheticInputEvent<*>) => {
     const data = new FormData()
     data.append('file', event.target.files[0])
-    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
     const postURI = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
       ? 'http://localhost:8000/upload'
       : 'https://react-drum-machine-sampler.herokuapp.com/upload'
       
-    axios.post(postURI, data, config)
+    axios.post(postURI, data, {})
          .then(response => {
            console.log(response)
            if (response.status === 200) {

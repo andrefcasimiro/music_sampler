@@ -2,12 +2,11 @@ var express = require('express')
 var app = express()
 var multer = require('multer')
 var cors = require('cors')
+var path = require('path')
 
 var whitelist = [
-  'https://react-drum-machine-sampler.herokuapp.com/', 
-  'https://react-drum-machine-sampler.herokuapp.com', 
-  'http://react-drum-machine-sampler.herokuapp.com/',
-  'http://react-drum-machine-sampler.herokuapp.com',
+  'https://andrefcasimiro.github.io/music_sampler/',
+  'https://andrefcasimiro.github.io/music_sampler',
   'http://localhost:3000/',
   'http://localhost:3000',
 ]
@@ -22,6 +21,12 @@ var corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+  res.sendfile(path.join(__dirname = 'build/index.html'));
+})
+
 app.use(cors(corsOptions))
 
 var storage = multer.diskStorage({
@@ -33,15 +38,7 @@ var storage = multer.diskStorage({
   },
 })
 
-
 var upload = multer({ storage }).single('file')
-
-app.options("*",function(req,res,next){
-  res.header("Access-Control-Allow-Origin", req.post("Origin")||"*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-   //other headers here
-    res.status(200).end();
-});
 
 app.post('/upload', cors(corsOptions), function (req, res) {
   console.log('uploading...')
