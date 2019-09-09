@@ -229,7 +229,7 @@ class Sampler extends Component<Props, State> {
 
     const postURI = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
       ? 'http://localhost:8000/upload'
-      : 'https://andrefcasimiro.github.io/music_sampler/upload'
+      : 'https://react-drum-machine-sampler.herokuapp.com/upload'
       
     axios.post(postURI, data, {})
          .then(response => {
